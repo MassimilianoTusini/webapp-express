@@ -2,6 +2,9 @@ const express = require("express");
 const app = express();
 const port = 3000;
 const movieRouter = require("./routers/movies");
+const notFound = require("./middlewares/notFound");
+const errorHandler = require("./middlewares/errorHandler");
+const imagePath = require('./middlewares/imagePath');
 
 // Middleware per leggere JSON
 app.use(express.json());
@@ -14,13 +17,14 @@ app.get("/", (req, res) => {
     res.send("<h1>Benvenuto nella Movies API</h1><p>Vai su <a href='/movies'>/movies</a> per vedere la lista dei film.</p>")
 });
 
-app.use("/movies", movieRouter);
+app.use("/api/movies", movieRouter);
 console.log("Router montato su /movies");
 
+// Middleware gestione Path imgs per le rotte
+app.use(imagePath);
+
 // MIddleware per rotte non trovate
-const notFound = require("./middlewares/notFound");
 app.use(notFound);
-const errorHandler = require("./middlewares/errorHandler")
 app.use(errorHandler);
 
 // Avvio del server
