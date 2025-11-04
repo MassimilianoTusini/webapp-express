@@ -5,6 +5,14 @@ const movieRouter = require("./routers/movies");
 const notFound = require("./middlewares/notFound");
 const errorHandler = require("./middlewares/errorHandler");
 const setImagePath = require('./middlewares/imagePath');
+const cors = requore("cors");
+
+// Middleware per CORS
+app.use(
+    cors({
+        origin: process.env.WA_REACT
+    })
+);
 
 // Middleware per leggere JSON
 app.use(express.json());
@@ -16,12 +24,12 @@ app.use(express.static("public"));
 app.use(setImagePath);
 
 // Rotta base
-app.get("/", (req, res) => {
+app.get("/api", (req, res) => {
     res.send("<h1>Benvenuto nella Movies API</h1><p>Vai su <a href='/movies'>/movies</a> per vedere la lista dei film.</p>");
 });
 
 // Rotte principali
-app.use("/movies", movieRouter);
+app.use("/api/movies", movieRouter);
 console.log("Router montato su /movies");
 
 // Middleware per rotte non trovate
