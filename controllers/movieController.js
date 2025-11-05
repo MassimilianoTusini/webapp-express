@@ -2,21 +2,21 @@ const connection = require('../data/db');
 
 // INDEX per mostrare tutti i post
 function index(req, res) {
-    console.log("Entrato in movieController.index");
-    const sql = 'SELECT * FROM movies';
-    connection.query(sql, (err, results) => {
+  console.log("Entrato in movieController.index");
+  const sql = 'SELECT * FROM movies';
+  connection.query(sql, (err, results) => {
 
-        if (err) return res.status(500).json({ error: 'Errore nel recuper dei film' });
+    if (err) return res.status(500).json({ error: 'Errore nel recuper dei film' });
 
-        const movies = results.map(movie => {
-            return {
-                ...movie,
-                image: req.imagePath + movie.image
-            }
-        })
-        res.json(movies);
+    const movies = results.map(movie => {
+      return {
+        ...movie,
+        image: req.imagePath + movie.image
+      }
+    })
+    res.json(movies);
 
-    });
+  });
 };
 
 // SHOW per mostrare un film e le sue recensioni tramite ID 
@@ -51,4 +51,19 @@ function show(req, res) {
     });
   });
 }
-module.exports = { index, show }
+
+function review(req, res) {
+
+  const id = req.params.id;
+
+  const {name, vote, text} = req.body
+
+  const addSql ="INSERT INTO `reviews` (`name`, `vote`, `text`, `movie_id`) VALUES (?, ?, ?, ?)";
+  connection.query(addSql, [name, vote, text, id], (err, result) => {
+    if(err) return res.status(500).json({error: "Errore query database"});
+    res.status(201);
+    res.json({id: result.insertId, message: "Recensione aggiunta"});
+  })
+}
+
+module.exports = { index, show, review }

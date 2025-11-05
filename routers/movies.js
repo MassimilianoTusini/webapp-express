@@ -12,4 +12,7 @@ router.get('/', movieController.index);
 // Rotta SHOW
 router.get('/:id', movieController.show);
 
+// REVIEW 
+router.post('/:id/reviews', movieController.review);
+
 module.exports = router;
