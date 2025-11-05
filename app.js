@@ -5,12 +5,12 @@ const movieRouter = require("./routers/movies");
 const notFound = require("./middlewares/notFound");
 const errorHandler = require("./middlewares/errorHandler");
 const setImagePath = require('./middlewares/imagePath');
-const cors = requore("cors");
+const cors = require("cors");
 
 // Middleware per CORS
 app.use(
     cors({
-        origin: process.env.WA_REACT
+        // origin: process.env.WA_REACT
     })
 );
 
